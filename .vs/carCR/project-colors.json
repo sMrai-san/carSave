@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "5de83acb-43e7-4912-bf9c-73d949574724": {
+      "ProjectGuid": "5de83acb-43e7-4912-bf9c-73d949574724",
+      "DisplayName": "carCRBackend",
+      "ColorIndex": 0
+    },
+    "0fc6dfd0-a1bf-4469-9cbc-e18fd1fda8c4": {
+      "ProjectGuid": "0fc6dfd0-a1bf-4469-9cbc-e18fd1fda8c4",
+      "DisplayName": "carcr",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
