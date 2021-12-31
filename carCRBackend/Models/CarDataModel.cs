@@ -9,6 +9,19 @@ namespace carCRBackend.Models
 {
     public class CarDataModel
     {
+        [Key]
+        public int CarId { get; set; }
 
+        [Required]
+        [MaxLength(100)]
+        public string? CarMake { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string? CarModel { get; set; }
+
+        [Required]
+        [MaxLength(4)]
+        public int CarDate { get; set; }
     }
 }
