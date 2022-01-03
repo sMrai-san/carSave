@@ -85,10 +85,10 @@
                         //.then(response => console.log(response))
                         .catch(error => console.log(error))
                     //alert(JSON.stringify("Lisätty auto Merkki: " + this.carForm.carMake + " Malli:" + this.carForm.carModel + " Vuosimalli: " + this.carForm.carDate))
-                    //this.notAdded = false; //getting spinner where the save-button was
-                    //setTimeout(() => {
+                    this.notAdded = false; //getting spinner where the save-button was
+                    setTimeout(() => {
                     this.$root.$emit('CarListHideAndRefresh') //we can call a function from CarList.vue mounted() like this
-                    /*}, 3000) */
+                    }, 3000)
                 }
                 else {
                     alert("Ole hyvä ja tarkista lisättävän ajoneuvon tiedot!");
