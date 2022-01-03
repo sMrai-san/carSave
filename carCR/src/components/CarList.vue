@@ -15,6 +15,8 @@
                      @row-clicked="deleteCar">
 
             </b-table>
+            <p class="text-secondary">*Voit lajitella ajoneuvot klikkaamalla haluttua otsikkoa.</p>
+            <p class="text-secondary">*Voit poistaa ajoneuvoja tietokannasta klikkaamalla ajoneuvoa.</p>
         </b-container>
         <b-modal id="carSaveModal" size="xl" hide-footer title="Ajoneuvon lisäys tietokantaan">
             <CarSave />
