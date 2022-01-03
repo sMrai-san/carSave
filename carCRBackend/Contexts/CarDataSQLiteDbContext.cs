@@ -5,7 +5,7 @@ namespace carCRBackend.Contexts
 {
     public class CarDataSQLiteDbContext : DbContext
     {
-        public DbSet<CarDataModel> Athletes { get; set; }
+        public DbSet<CarDataModel> Cars { get; set; }
 
         public CarDataSQLiteDbContext(DbContextOptions<CarDataSQLiteDbContext> options) : base(options)
         {

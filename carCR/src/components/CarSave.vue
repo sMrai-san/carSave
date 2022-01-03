@@ -10,7 +10,7 @@
                 <b-row class="mt-2 justify-content-md-center">
                     <b-col md="6">
                         <label for="car-manufacturer" class="inputLabel">Valmistaja</label>
-                        <b-form-input type="text" v-model="carMake" :state="validationMake" id="car-manufacturer" required></b-form-input>
+                        <b-form-input type="text" v-model="carForm.carMake" :state="validationMake" id="car-manufacturer" required></b-form-input>
                         <b-form-invalid-feedback :state="validationMake">
                             Auton valmistajan tulee olla 2-100 merkkiä pitkä.
                         </b-form-invalid-feedback>
@@ -22,9 +22,9 @@
                 <b-row class="mt-2 justify-content-md-center">
                     <b-col md="6">
                         <label for="car-model" class="inputLabel">Malli</label>
-                        <b-form-input type="text" v-model="carModel" :state="validationModel" id="car-model" required></b-form-input>
+                        <b-form-input type="text" v-model="carForm.carModel" :state="validationModel" id="car-model" required></b-form-input>
                         <b-form-invalid-feedback :state="validationModel">
-                            Auton mallin tulee olla 2-100 merkkiä pitkä.
+                            Auton mallin tulee olla 1-100 merkkiä pitkä.
                         </b-form-invalid-feedback>
                         <b-form-valid-feedback :state="validationModel">
                             Auton malli ok
@@ -34,7 +34,7 @@
                 <b-row class="mt-2 justify-content-md-center">
                     <b-col md="6">
                         <label for="car-date" class="inputLabel">Vuosimalli</label>
-                        <b-form-input type="number" v-model="carDate" :state="validationDate" id="car-date" required></b-form-input>
+                        <b-form-input type="number" v-model="carForm.carDate" :state="validationDate" id="car-date" required></b-form-input>
                         <b-form-invalid-feedback :state="validationDate">
                             Syötä kelvollinen vuosimalli
                         </b-form-invalid-feedback>
@@ -45,46 +45,74 @@
                 </b-row>
                 <b-row class="mt-3 justify-content-md-center">
                     <b-col md="6">
-                        <b-button type="submit" variant="primary">Tallenna</b-button>
+                        <b-button type="submit" variant="primary" v-if="notAdded">Tallenna</b-button>
+                        <div v-else>
+                            <b-spinner label="Loading..."></b-spinner>
+                        </div>
                     </b-col>
                 </b-row>
-                <b-row class="mt-2 justify-content-md-center">
+                <!--<b-row class="mt-2 justify-content-md-center">
                     <b-col md="6">
                         <b-button type="" variant="secondary">Takaisin</b-button>
                     </b-col>
-                </b-row>
+                </b-row>-->
             </b-container>
         </b-form>
-</div>
+    </div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-          carMake: '',
-          carModel: '',
-          carDate: ''
-      }
+    import axios from 'axios'
+
+    export default {
+        name: 'CarSave',
+        data() {
+            return {
+                carForm: {
+                    carMake: '',
+                    carModel: '',
+                    carDate: '',
+                },
+                notAdded: true,
+
+            }
         },
         methods: {
             onSubmit(event) {
-                event.preventDefault()
-                alert(JSON.stringify("Merkki: " + this.carMake + " Malli:" + this.carModel + " Vuosimalli: " + this.carDate))
+                if (this.validationModel && this.validationDate && this.validationMake) {
+                    event.preventDefault()
+                    axios.post('https://localhost:7280/api/CarData', this.carForm)
+                        //.then(response => console.log(response))
+                        .catch(error => console.log(error))
+                    //alert(JSON.stringify("Lisätty auto Merkki: " + this.carForm.carMake + " Malli:" + this.carForm.carModel + " Vuosimalli: " + this.carForm.carDate))
+                    //this.notAdded = false; //getting spinner where the save-button was
+                    //setTimeout(() => {
+                    this.$root.$emit('CarListHideAndRefresh') //we can call a function from CarList.vue mounted() like this
+                    /*}, 3000) */
+                }
+                else {
+                    alert("Ole hyvä ja tarkista lisättävän ajoneuvon tiedot!");
+                }
+
+            },
+        },
+        computed: {
+            //INPUT VALIDATIONS
+            //car make cannot be under 2 and over 100 char
+            validationMake() {
+                return this.carForm.carMake.length >= 2 && this.carForm.carMake.length <= 100
+            },
+            //car model cannot be under 1 and over 100 char
+            validationModel() {
+                return this.carForm.carModel.length > 1 && this.carForm.carModel.length <= 100
+            },
+            validationDate() {
+                //car manufacture date cannot be under 1900 and not over current year
+                var dateNow = new Date().getFullYear();
+                return this.carForm.carDate.length === 4 && this.carForm.carDate >= 1900 && this.carForm.carDate <= dateNow
             }
-        },
-    computed: {
-      validationMake() {
-            return this.carMake.length > 2 && this.carMake.length < 100
-        },
-        validationModel() {
-            return this.carModel.length > 2 && this.carModel.length < 100
-        },
-        validationDate() {
-            return this.carDate.length === 4
         }
     }
-  }
 </script>
 
 <style scoped>

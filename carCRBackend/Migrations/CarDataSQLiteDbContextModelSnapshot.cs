@@ -38,7 +38,7 @@ namespace carCRBackend.Migrations
 
                     b.HasKey("CarId");
 
-                    b.ToTable("Athletes");
+                    b.ToTable("Cars");
                 });
 #pragma warning restore 612, 618
         }

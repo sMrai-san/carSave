@@ -21,7 +21,7 @@ namespace carCRBackend.Models
         public string? CarModel { get; set; }
 
         [Required]
-        [MaxLength(4)]
+        [Range(1900, 9999)]
         public int CarDate { get; set; }
     }
 }

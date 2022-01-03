@@ -2,12 +2,27 @@ using carCRBackend.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var MyCORS = "_myAllowSpecificOrigins"; //CORS
 
 // Add services to the container.
 builder.Services.AddDbContext<CarDataSQLiteDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("SQLite"));
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyCORS,
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+    });
+});
+
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -24,6 +39,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyCORS);
 
 app.UseAuthorization();
 

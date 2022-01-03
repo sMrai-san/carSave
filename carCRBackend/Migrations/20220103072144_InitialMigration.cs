@@ -9,7 +9,7 @@ namespace carCRBackend.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Athletes",
+                name: "Cars",
                 columns: table => new
                 {
                     CarId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -20,14 +20,14 @@ namespace carCRBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Athletes", x => x.CarId);
+                    table.PrimaryKey("PK_Cars", x => x.CarId);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Athletes");
+                name: "Cars");
         }
     }
 }

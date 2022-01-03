@@ -10,7 +10,7 @@ using carCRBackend.Contexts;
 namespace carCRBackend.Migrations
 {
     [DbContext(typeof(CarDataSQLiteDbContext))]
-    [Migration("20211231090527_InitialMigration")]
+    [Migration("20220103072144_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,7 @@ namespace carCRBackend.Migrations
 
                     b.HasKey("CarId");
 
-                    b.ToTable("Athletes");
+                    b.ToTable("Cars");
                 });
 #pragma warning restore 612, 618
         }
