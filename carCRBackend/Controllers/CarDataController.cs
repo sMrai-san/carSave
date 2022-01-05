@@ -12,7 +12,7 @@ using carCRBackend.Models;
 namespace carCRBackend.Controllers
 {
     //**************************************************
-    //Automatically generated using SQLite context
+    //Automatically generated GET, PUT, POST, DELETE using SQLite context
     //**************************************************
 
     [Route("api/[controller]")]
@@ -26,14 +26,18 @@ namespace carCRBackend.Controllers
             _context = context;
         }
 
-        // GET: api/CarData
+        //********************************
+        //Get all cars
+        //********************************
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CarDataModel>>> GetCars()
         {
             return await _context.Cars.ToListAsync();
         }
 
-        // GET: api/CarData/5
+        //********************************
+        //Get one car
+        //********************************
         [HttpGet("{id}")]
         public async Task<ActionResult<CarDataModel>> GetCarDataModel(int id)
         {
@@ -47,7 +51,9 @@ namespace carCRBackend.Controllers
             return carDataModel;
         }
 
-        // PUT: api/CarData/5
+        //********************************
+        //Edit car
+        //********************************
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCarDataModel(int id, CarDataModel carDataModel)
         {
@@ -77,7 +83,9 @@ namespace carCRBackend.Controllers
             return NoContent();
         }
 
-        // POST: api/CarData
+        //********************************
+        //Add car
+        //********************************
         [HttpPost]
         public async Task<ActionResult<CarDataModel>> PostCarDataModel(CarDataModel carDataModel)
         {
@@ -87,7 +95,9 @@ namespace carCRBackend.Controllers
             return CreatedAtAction("GetCarDataModel", new { id = carDataModel.CarId }, carDataModel);
         }
 
-        // DELETE: api/CarData/5
+        //********************************
+        //Delete car
+        //********************************
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCarDataModel(int id)
         {

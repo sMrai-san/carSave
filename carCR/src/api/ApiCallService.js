@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = "https://localhost:7280/api/CarData/";
+const apiUrl = "http://94.237.113.71:5011/api/cardata/";
 
 class ApiCall {
 

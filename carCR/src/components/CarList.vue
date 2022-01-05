@@ -1,11 +1,12 @@
 <template>
     <div>
-        <b-container>
+        <b-container >
             <b-row class="mb-3">
                 <b-col class="float-start"><h4>Tietokannassa olevat ajoneuvot</h4></b-col>
                 <b-col><b-button v-b-modal.carSaveModal variant="primary" class="float-end">Lisää ajoneuvo</b-button></b-col>
             </b-row>
             <b-table id="carTable"
+                     ref="table"
                      hover
                      :items="carsFromDb"
                      :fields="fields"
@@ -59,19 +60,14 @@
                 errorMsg: "",
             }
         },
-        mounted() {
+        created() {
             this.loadCars();
+        },
+        mounted() {
             this.$root.$on('CarListHideAndRefresh', (carForm) => {
                 this.addCar(carForm);
                 this.$bvModal.hide('carSaveModal');
             });
-        },
-        watch: {
-            carsFromDb: {
-                handler() {
-                    this.loadCars();
-                }
-            }
         },
         methods: {
             //Getting all the cars in the DB to list array
@@ -81,19 +77,19 @@
                         //console.log(response.data)
                         //populatin cars 'array'
                         this.carsFromDb = response.data;
-                    })
+                })
                     .catch((error) => {
                         //console.log(error)
                         this.errorMsg = 'Ajoneuvojen haku tietokannasta epäonnistui' + error;
                     })
             },
-            //Adding a car from database
+            //Adding a car to database
             addCar(car) {
                 ApiCall.addCar(car)
-                    .then(/*response => console.log(response)*/)
+                    .then(response => this.carsFromDb.push(response.data))
                     .catch((error) => {
-                    this.errorMsg = 'Ajoneuvon tallennus tietokantaan epäonnistui' + error;
-                })
+                        this.errorMsg = 'Ajoneuvon tallennus tietokantaan epäonnistui' + error;
+                    })
                 //alert(JSON.stringify("Lisätty auto Merkki: " + this.carForm.carMake + " Malli:" + this.carForm.carModel + " Vuosimalli: " + this.carForm.carDate))
             },
             //Deleting a car from database
@@ -105,6 +101,7 @@
                         .catch((error) => {
                             this.errorMsg = 'Ajoneuvon poisto tietokannasta epäonnistui' + error;
                         })
+                    this.carsFromDb = this.carsFromDb.filter(c => c.carId != row.carId);
                 }
             },
         },

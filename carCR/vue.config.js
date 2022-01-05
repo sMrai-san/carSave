@@ -18,6 +18,9 @@ const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
 
 module.exports = {
+    publicPath: process.env.NODE_ENV === 'production'
+        ? '/autotietokanta/'
+        : '/',
     devServer: {
         https: {
             key: fs.readFileSync(keyFilePath),
@@ -25,7 +28,7 @@ module.exports = {
         },
         proxy: {
             '^/api': {
-                target: 'https://localhost:7280/'
+                target: 'http://localhost:5011/'
             }
         },
         port: 5002
