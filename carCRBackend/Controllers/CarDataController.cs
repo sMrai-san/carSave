@@ -11,6 +11,10 @@ using carCRBackend.Models;
 
 namespace carCRBackend.Controllers
 {
+    //**************************************************
+    //Automatically generated using SQLite context
+    //**************************************************
+
     [Route("api/[controller]")]
     [ApiController]
     public class CarDataController : ControllerBase
@@ -44,7 +48,6 @@ namespace carCRBackend.Controllers
         }
 
         // PUT: api/CarData/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCarDataModel(int id, CarDataModel carDataModel)
         {
@@ -75,7 +78,6 @@ namespace carCRBackend.Controllers
         }
 
         // POST: api/CarData
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<CarDataModel>> PostCarDataModel(CarDataModel carDataModel)
         {

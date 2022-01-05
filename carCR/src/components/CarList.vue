@@ -12,7 +12,8 @@
                      thead-class="bg-light"
                      selectable
                      select-mode="single"
-                     @row-clicked="deleteCar">
+                     @row-clicked="deleteCar"
+                     >
 
             </b-table>
             <p class="text-secondary">*Voit lajitella ajoneuvot klikkaamalla haluttua otsikkoa.</p>
@@ -25,13 +26,13 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import CarSave from './CarSave.vue'
+    import ApiCall from "../api/ApiCallService";
 
     export default {
         name: 'CarList',
         components: {
-            CarSave
+            CarSave,
         },
         data() {
             return {
@@ -59,15 +60,22 @@
         },
         mounted() {
             this.loadCars();
-            this.$root.$on('CarListHideAndRefresh', () => {
+            this.$root.$on('CarListHideAndRefresh', (carForm) => {
+                this.addCar(carForm);
                 this.$bvModal.hide('carSaveModal');
-                window.location.reload(); //not so good way to refresh things, help wanted :)
             });
+        },
+        watch: {
+            carsFromDb: {
+                handler() {
+                    this.loadCars();
+                }
+            }
         },
         methods: {
             //Getting all the cars in the DB to list array
             loadCars() {
-                axios.get('https://localhost:7280/api/CarData')
+                ApiCall.loadCars()
                     .then((response) => {
                         //console.log(response.data)
                         this.carsFromDb = response.data; //populatin cars 'array'
@@ -77,14 +85,18 @@
                         this.errorMsg = 'Error retrieving data' + error;
                     })
             },
+            addCar(car) {
+                ApiCall.addCar(car)
+                    .then(/*response => console.log(response)*/)
+                    .catch(error => console.log(error))
+                //alert(JSON.stringify("Lisätty auto Merkki: " + this.carForm.carMake + " Malli:" + this.carForm.carModel + " Vuosimalli: " + this.carForm.carDate))
+            },
             deleteCar(row) {
                 //fast confirmation car delete
                 if (confirm('Haluatko varmasti poistaa ajoneuvon:\n' + 'AjoneuvoId: ' + row.carId + '\nMerkki:' + row.carMake + '\nMalli:' + row.carModel + '?')) {
-                    axios.delete('https://localhost:7280/api/CarData/' + row.carId)
-                        .then(response => console.log(response))
+                    ApiCall.deleteCar(row)
+                        .then(/*response => console.log(response)*/)
                         .catch(error => console.log(error))
-                    //filter the carlist to 'refresh' the list after delete
-                    this.carsFromDb = this.carsFromDb.filter(c => c.carId != row.carId);
                 }
             },
         },

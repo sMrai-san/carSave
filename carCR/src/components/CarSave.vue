@@ -62,8 +62,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
-
     export default {
         name: 'CarSave',
         data() {
@@ -80,20 +78,13 @@
         methods: {
             onSubmit(event) {
                 if (this.validationModel && this.validationDate && this.validationMake) {
-                    event.preventDefault()
-                    axios.post('https://localhost:7280/api/CarData', this.carForm)
-                        //.then(response => console.log(response))
-                        .catch(error => console.log(error))
-                    //alert(JSON.stringify("Lisätty auto Merkki: " + this.carForm.carMake + " Malli:" + this.carForm.carModel + " Vuosimalli: " + this.carForm.carDate))
+                    event.preventDefault();
                     this.notAdded = false; //getting spinner where the save-button was
-                    setTimeout(() => {
-                    this.$root.$emit('CarListHideAndRefresh') //we can call a function from CarList.vue mounted() like this
-                    }, 3000)
+                    this.$root.$emit('CarListHideAndRefresh', this.carForm) //we can call a function from CarList.vue mounted() like this and pass the data we want to add for array
                 }
                 else {
                     alert("Ole hyvä ja tarkista lisättävän ajoneuvon tiedot!");
                 }
-
             },
         },
         computed: {
@@ -104,7 +95,7 @@
             },
             //car model cannot be under 1 and over 100 char
             validationModel() {
-                return this.carForm.carModel.length > 1 && this.carForm.carModel.length <= 100
+                return this.carForm.carModel.length >= 1 && this.carForm.carModel.length <= 100
             },
             validationDate() {
                 //car manufacture date cannot be under 1900 and not over current year
