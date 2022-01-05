@@ -79,9 +79,10 @@
             onSubmit(event) {
                 if (this.validationModel && this.validationDate && this.validationMake) {
                     event.preventDefault();
-                    this.notAdded = false; //getting spinner where the save-button was
-                    this.$root.$emit('CarListHideAndRefresh', this.carForm) //we can call a function from CarList.vue mounted() like this and pass the data we want to add for array
-                }
+                    //getting spinner where the save-button was
+                    this.notAdded = false;
+                    //we can call a function from CarList.vue mounted() like this and pass the data we want to add
+                    this.$root.$emit('CarListHideAndRefresh', this.carForm) }
                 else {
                     alert("Ole hyvä ja tarkista lisättävän ajoneuvon tiedot!");
                 }

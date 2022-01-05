@@ -16,6 +16,7 @@
                      >
 
             </b-table>
+            <h3 v-if="errorMsg != ''" class="text-danger">{{errorMsg}}</h3>
             <p class="text-secondary">*Voit lajitella ajoneuvot klikkaamalla haluttua otsikkoa.</p>
             <p class="text-secondary">*Voit poistaa ajoneuvoja tietokannasta klikkaamalla ajoneuvoa.</p>
         </b-container>
@@ -36,7 +37,7 @@
         },
         data() {
             return {
-                //HOX! id field is hidden from the user
+                //HOX! carId field is hidden from the user
                 fields: [
                     {
                         key: 'carMake',
@@ -78,25 +79,32 @@
                 ApiCall.loadCars()
                     .then((response) => {
                         //console.log(response.data)
-                        this.carsFromDb = response.data; //populatin cars 'array'
+                        //populatin cars 'array'
+                        this.carsFromDb = response.data;
                     })
                     .catch((error) => {
                         //console.log(error)
-                        this.errorMsg = 'Error retrieving data' + error;
+                        this.errorMsg = 'Ajoneuvojen haku tietokannasta epäonnistui' + error;
                     })
             },
+            //Adding a car from database
             addCar(car) {
                 ApiCall.addCar(car)
                     .then(/*response => console.log(response)*/)
-                    .catch(error => console.log(error))
+                    .catch((error) => {
+                    this.errorMsg = 'Ajoneuvon tallennus tietokantaan epäonnistui' + error;
+                })
                 //alert(JSON.stringify("Lisätty auto Merkki: " + this.carForm.carMake + " Malli:" + this.carForm.carModel + " Vuosimalli: " + this.carForm.carDate))
             },
+            //Deleting a car from database
             deleteCar(row) {
                 //fast confirmation car delete
                 if (confirm('Haluatko varmasti poistaa ajoneuvon:\n' + 'AjoneuvoId: ' + row.carId + '\nMerkki:' + row.carMake + '\nMalli:' + row.carModel + '?')) {
                     ApiCall.deleteCar(row)
                         .then(/*response => console.log(response)*/)
-                        .catch(error => console.log(error))
+                        .catch((error) => {
+                            this.errorMsg = 'Ajoneuvon poisto tietokannasta epäonnistui' + error;
+                        })
                 }
             },
         },
